@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#116b76">
+<title>Salud Contigo | Orientador de salud</title>
+<style>
+:root{--teal:#116b76;--teal2:#168b88;--navy:#173b57;--mint:#eaf7f4;--blue:#edf5fa;--ink:#203341;--muted:#60717d;--line:#d8e3e8;--red:#b42332;--redbg:#fff0f1;--gold:#8b5b00;--goldbg:#fff6df;--green:#176b48;--greenbg:#eaf7ef;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:#f2f6f8;color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+.wrap{max-width:790px;margin:0 auto;padding:14px}
+header{background:linear-gradient(135deg,#116b76,#173b57);color:white;border-radius:22px;padding:23px 20px;position:relative;overflow:hidden}
+header:after{content:"✚";position:absolute;right:18px;top:8px;font-size:105px;opacity:.09;font-weight:bold}
+.brand{font-size:11px;letter-spacing:1.8px;font-weight:bold;opacity:.9}
+h1{font-size:30px;line-height:1.05;margin:8px 0}header p{font-size:14px;color:#e7f5f6;margin:8px 0 0;max-width:550px}
+.tag{display:inline-block;margin-top:13px;border:1px solid #ffffff66;background:#ffffff1a;border-radius:30px;padding:5px 10px;font-size:11px}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px;margin-top:13px;box-shadow:0 4px 16px #153b5709}
+h2{font-size:18px;color:var(--navy);margin:0 0 5px}.sub{font-size:13px;color:var(--muted);margin:0 0 13px}
+.alert{background:var(--redbg);border:1px solid #efc1c5;color:#7e1722;border-radius:14px;padding:13px 14px;font-size:13px;margin-top:13px}
+.alert strong{display:block;margin-bottom:4px}
+label.main{font-weight:bold;font-size:13px;display:block;margin:12px 0 6px}
+select,textarea{width:100%;padding:12px;border:1px solid #cbd9df;border-radius:12px;background:white;font:inherit;font-size:14px;color:var(--ink)}
+textarea{min-height:75px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.option{display:flex;gap:8px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:13px;background:white;cursor:pointer}
+.option input{margin-top:3px;accent-color:var(--teal);transform:scale(1.08)}
+.option:has(input:checked){background:var(--mint);border-color:var(--teal2)}
+button{border:0;border-radius:13px;background:var(--teal);color:#fff;padding:14px 17px;font-size:15px;font-weight:bold;width:100%;margin-top:14px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#eef4f6;color:var(--navy);border:1px solid var(--line);margin-top:8px}
+.small{font-size:11px;color:var(--muted)}
+.result{display:none}.resultbox{border:1px solid var(--line);border-radius:15px;padding:15px}
+.resultbox h3{font-size:17px;margin:0 0 7px}.resultbox p{font-size:13px;margin:7px 0}
+.urgent{background:var(--redbg);border-color:#edb8be;color:#7e1722}
+.review{background:var(--goldbg);border-color:#eed89d;color:#684900}
+.info{background:var(--blue);border-color:#cbdfea;color:#173b57}
+.cause{background:#ffffffb8;border:1px solid #d7e2e7;border-radius:11px;padding:10px;margin-top:8px}
+.cause strong{display:block;font-size:13px;margin-bottom:3px}
+.guidebox{background:#eef7f5;border:1px solid #cde6df;border-radius:12px;padding:11px;margin-top:10px;color:#234b4a;font-size:13px}
+.guidebox strong{display:block;margin-bottom:4px;color:#145b5b}
+.recommendbox{background:#eef7f0;border:1px solid #cce5d2;border-radius:12px;padding:11px;margin-top:10px;color:#244b35;font-size:13px}
+.recommendbox strong{display:block;margin-bottom:5px;color:#176b48}
+.recommendbox ul{margin:5px 0 0;padding-left:19px}.recommendbox li{margin:5px 0}
+.pill{display:inline-block;background:#e8f0f5;color:#23485e;border-radius:20px;padding:4px 8px;font-size:10px;font-weight:bold;margin:2px 3px 2px 0}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:18px 8px}
+@media(max-width:540px){.wrap{padding:10px}header{padding:20px 16px}h1{font-size:27px}.grid{grid-template-columns:1fr}.card{padding:14px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="brand">ORIENTACIÓN EN SALUD · PERÚ</div>
+ <h1>Salud Contigo</h1>
+ <p>Elige una especialidad, indica qué síntomas tienes y conoce posibles explicaciones y el siguiente paso recomendado.</p>
+ <span class="tag">Prototipo académico · No reemplaza una consulta médica</span>
+</header>
+
+<div class="alert">
+ <strong>🚨 Si hay una emergencia, no esperes al aplicativo.</strong>
+ Dificultad intensa para respirar, dolor fuerte en el pecho, desmayo, convulsiones, sangrado abundante, debilidad repentina de un lado del cuerpo o dificultad repentina para hablar requieren atención de emergencia inmediata.
+</div>
+
+<section class="card">
+ <h2>1. Selecciona una especialidad</h2>
+ <p class="sub">Si no sabes cuál elegir, comienza por Medicina general.</p>
+ <label class="main" for="specialty">Especialidad</label>
+ <select id="specialty">
+  <option value="general">Medicina general</option>
+  <option value="pediatria">Pediatría</option>
+  <option value="respiratorio">Neumología / vías respiratorias</option>
+  <option value="gastro">Gastroenterología</option>
+  <option value="derma">Dermatología</option>
+  <option value="gine">Ginecología y obstetricia</option>
+  <option value="uro">Urología</option>
+  <option value="neuro">Neurología</option>
+  <option value="cardio">Cardiología</option>
+  <option value="trauma">Traumatología</option>
+ </select>
+ <div id="ageWrap">
+  <label class="main" for="age">Edad o grupo de edad</label>
+  <select id="age">
+   <option value="adult">Persona adulta</option>
+   <option value="child">Niño/a (3 meses a 11 años)</option>
+   <option value="teen">Adolescente (12 a 17 años)</option>
+   <option value="older">Adulto/a mayor</option>
+   <option value="under3">Bebé menor de 3 meses</option>
+   <option value="pregnant">Persona embarazada</option>
+  </select>
+ </div>
+</section>
+
+<section class="card">
+ <h2>2. Selecciona los síntomas</h2>
+ <p class="sub">Marca todos los que correspondan. También puedes añadir una descripción breve.</p>
+ <div id="symptomList" class="grid"></div>
+ <label class="main" for="details">Cuéntanos un poco más (opcional)</label>
+ <textarea id="details" placeholder="Ej.: comenzó ayer, el dolor está en el lado derecho... No escribas tu nombre ni DNI."></textarea>
+ <label class="main" for="duration">¿Desde cuándo ocurre?</label>
+ <select id="duration">
+  <option>Hoy</option><option>Hace 1 a 2 días</option><option>Hace 3 a 7 días</option><option>Hace más de una semana</option><option>No estoy seguro/a</option>
+ </select>
+</section>
+
+<section class="card">
+ <h2 id="alarmHeading">3. Señales de alarma · Medicina general</h2>
+ <p class="sub" id="alarmDescription">Marca si la persona presenta actualmente alguno de estos signos. La lista cambia según la especialidad seleccionada.</p>
+ <div id="alarmList" class="grid"></div>
+ <button id="analyze">Ver posibles causas y orientación</button>
+ <button class="secondary" id="clear">Limpiar respuestas</button>
+</section>
+
+<section class="card result" id="result" aria-live="polite">
+ <h2>Resultado orientativo</h2>
+ <div id="resultbox" class="resultbox"></div>
+ <p class="small" style="margin-top:10px">El resultado ofrece explicaciones educativas basadas en las casillas seleccionadas. No es un diagnóstico, no calcula probabilidades clínicas y no sustituye la evaluación de un profesional.</p>
+</section>
+
+<section class="card">
+ <h2>¿Cómo usar esta orientación?</h2>
+ <p class="sub">Lleva la información de tus síntomas a un profesional de salud. El personal determinará si necesitas consulta, pruebas, tratamiento o atención prioritaria.</p>
+ <p class="small"><strong>En Perú:</strong> sigue las indicaciones del establecimiento, del servicio de admisión y del personal de triaje. La prioridad de atención la determina el personal de salud, no este aplicativo.</p>
+</section>
+
+<footer>
+ SALUD CONTIGO · Prototipo académico de orientación en salud.<br>
+ No receta medicamentos. No almacena ni envía las respuestas. No ingreses datos personales.<br>
+ Para uso con pacientes reales requiere revisión clínica, privacidad y autorización del establecimiento.
+</footer>
+</div>
+
+<script>
+const specialties = {
+ general:{
+  label:"Medicina general",
+  symptoms:[["fever","Fiebre"],["fatigue","Cansancio o debilidad"],["headache","Dolor de cabeza"],["body","Dolor muscular o corporal"],["dizzy","Mareo"],["chills","Escalofríos"],["swollen","Ganglios inflamados"]]
+ },
+ pediatria:{
+  label:"Pediatría",
+  symptoms:[["fever","Fiebre"],["cough","Tos"],["runny","Congestión o secreción nasal"],["vomit","Vómitos"],["diarrhea","Diarrea"],["rash","Sarpullido o manchas"],["poorfeed","Come o toma mucho menos de lo habitual"],["sleepy","Somnolencia inusual o dificultad para despertarlo"]]
+ },
+ respiratorio:{
+  label:"Neumología / vías respiratorias",
+  symptoms:[["cough","Tos"],["sore","Dolor de garganta"],["runny","Congestión o secreción nasal"],["fever","Fiebre"],["wheeze","Silbidos al respirar"],["breath","Falta de aire"],["phlegm","Tos con flema"],["longcough","Tos persistente por 2 semanas o más"]]
+ },
+ gastro:{
+  label:"Gastroenterología",
+  symptoms:[["abdpain","Dolor abdominal"],["diarrhea","Diarrea"],["vomit","Vómitos"],["nausea","Náuseas"],["heartburn","Ardor o acidez"],["bloat","Hinchazón abdominal"],["constipation","Estreñimiento"],["bloodstool","Sangre en las heces"]]
+ },
+ derma:{
+  label:"Dermatología",
+  symptoms:[["itch","Picazón"],["rash","Sarpullido o manchas"],["redskin","Enrojecimiento de la piel"],["blister","Ampollas"],["dry","Piel seca o descamada"],["wound","Herida o lesión en la piel"],["swelling","Hinchazón de la piel"]]
+ },
+ gine:{
+  label:"Ginecología y obstetricia",
+  symptoms:[["pelvic","Dolor pélvico o bajo vientre"],["discharge","Flujo vaginal diferente al habitual"],["itch","Picazón o irritación genital"],["period","Cambios en la menstruación"],["urinary","Ardor al orinar"],["nausea","Náuseas"],["bleeding","Sangrado vaginal"]]
+ },
+ uro:{
+  label:"Urología",
+  symptoms:[["urinary","Ardor o dolor al orinar"],["frequency","Necesidad de orinar con frecuencia"],["bloodurine","Sangre en la orina"],["flank","Dolor en la espalda baja o costado"],["fever","Fiebre"],["testicle","Dolor testicular"],["weakstream","Dificultad para iniciar o mantener el chorro de orina"]]
+ },
+ neuro:{
+  label:"Neurología",
+  symptoms:[["headache","Dolor de cabeza"],["dizzy","Mareo o vértigo"],["tingle","Hormigueo"],["weakness","Debilidad"],["vision","Cambios en la visión"],["memory","Problemas recientes de memoria o confusión"]]
+ },
+ cardio:{
+  label:"Cardiología",
+  symptoms:[["palp","Palpitaciones"],["chest","Molestia o dolor en el pecho"],["breath","Falta de aire"],["swelling","Hinchazón de piernas o tobillos"],["fatigue","Cansancio inusual"],["dizzy","Mareo o sensación de desmayo"]]
+ },
+ trauma:{
+  label:"Traumatología",
+  symptoms:[["joint","Dolor en una articulación"],["muscle","Dolor muscular"],["swelling","Hinchazón después de un golpe"],["movement","Dificultad para mover una parte del cuerpo"],["back","Dolor de espalda"],["injury","Golpe, caída o lesión reciente"],["numb","Adormecimiento después de una lesión"]]
+ }
+};
+
+const alarmSets = {
+ general:[
+  ["breath","Dificultad intensa para respirar o no puede hablar por falta de aire"],
+  ["chest","Dolor u opresión fuerte en el pecho"],
+  ["faint","Desmayo, no responde o está muy confundido/a"],
+  ["seizure","Convulsiones"],
+  ["heavybleed","Sangrado abundante que no se detiene"],
+  ["stroke","Cara caída, debilidad repentina de un lado o dificultad para hablar"],
+  ["allergy","Hinchazón de lengua o garganta con dificultad para respirar"],
+  ["severeabd","Dolor abdominal intenso o que empeora rápidamente"],
+  ["dehydration","No puede retener líquidos, casi no orina o está muy decaído/a"],
+  ["headacute","Dolor de cabeza súbito y extremadamente intenso"]
+ ],
+ pediatria:[
+  ["breath","Respira con mucha dificultad, se le hunden las costillas o hace pausas al respirar"],
+  ["dehydration","No puede beber, vomita todo, casi no orina o tiene signos marcados de deshidratación"],
+  ["childsleep","Está muy decaído/a, cuesta despertarlo/a o no responde como habitualmente"],
+  ["seizure","Convulsiones, incluso si ya se detuvieron"],
+  ["childrash","Manchas rojas o moradas que no desaparecen al presionarlas, especialmente con fiebre"],
+  ["feverunder3","Bebé menor de 3 meses con temperatura de 38 °C o más"],
+  ["allergy","Hinchazón de labios, lengua o garganta, o dificultad para respirar tras una posible alergia"],
+  ["heavybleed","Sangrado abundante o que no se detiene"]
+ ],
+ respiratorio:[
+  ["breath","Falta de aire intensa, no puede hablar frases completas o se esfuerza mucho para respirar"],
+  ["bluecolor","Labios o rostro azulados, grisáceos o con coloración anormal"],
+  ["chest","Dolor fuerte u opresión en el pecho"],
+  ["bloodcough","Tose sangre en cantidad mayor que pequeñas vetas o junto con falta de aire"],
+  ["faint","Desmayo, confusión marcada o dificultad para despertar"],
+  ["allergy","Hinchazón de lengua o garganta con dificultad respiratoria"],
+  ["severeweak","Empeoramiento rápido o debilidad extrema junto con síntomas respiratorios"]
+ ],
+ gastro:[
+  ["severeabd","Dolor abdominal muy intenso, abdomen rígido o dolor que empeora rápidamente"],
+  ["dehydration","No puede retener líquidos, casi no orina, se desmaya o está muy decaído/a"],
+  ["digestivebleed","Vómito con sangre o heces negras/alquitranadas o con abundante sangre"],
+  ["faint","Desmayo, confusión o debilidad extrema"],
+  ["persistentvomit","Vómitos persistentes que impiden retener líquidos"],
+  ["feverabd","Dolor abdominal acompañado de fiebre alta y deterioro importante del estado general"]
+ ],
+ derma:[
+  ["allergy","Hinchazón de lengua o garganta, dificultad para respirar o reacción generalizada"],
+  ["skinmucosa","Ampollas extensas, desprendimiento de piel o lesiones en boca, ojos o genitales"],
+  ["skinrapid","Enrojecimiento o hinchazón que se extiende rápidamente con dolor intenso o fiebre"],
+  ["skinpurple","Manchas moradas que no palidecen al presionarlas, especialmente con fiebre o malestar intenso"],
+  ["skinface","Hinchazón rápida de cara o alrededor de los ojos, especialmente si afecta la respiración o la visión"],
+  ["faint","Confusión, desmayo o deterioro general junto con una lesión de piel"]
+ ],
+ gine:[
+  ["pregbleed","Embarazo posible o confirmado con sangrado vaginal o dolor abdominal intenso"],
+  ["heavybleed","Sangrado vaginal muy abundante, empapa toallas rápidamente o se acompaña de mareo/desmayo"],
+  ["severeabd","Dolor pélvico o abdominal intenso, repentino o que empeora rápidamente"],
+  ["faint","Desmayo, debilidad extrema o sensación de desvanecimiento con dolor o sangrado"],
+  ["pregseizure","Convulsiones durante el embarazo o después del parto"],
+  ["preghead","Embarazo o posparto con dolor de cabeza intenso, alteraciones de visión o dolor fuerte en la parte alta del abdomen"],
+  ["feverpelvic","Fiebre alta con dolor pélvico intenso o flujo acompañado de deterioro importante"]
+ ],
+ uro:[
+  ["urineretention","No puede orinar a pesar de tener muchas ganas o dolor/inflamación en la parte baja del abdomen"],
+  ["feverflank","Fiebre o escalofríos junto con dolor intenso en el costado o espalda"],
+  ["bloodclots","Sangre abundante o coágulos en la orina, especialmente si dificultan orinar"],
+  ["testicleacute","Dolor testicular repentino e intenso o hinchazón súbita de un testículo"],
+  ["faint","Desmayo, confusión o debilidad extrema"],
+  ["severeabd","Dolor intenso en abdomen, pelvis o costado que empeora rápidamente"],
+  ["urosepsis","Fiebre con confusión, respiración rápida o deterioro marcado del estado general"]
+ ],
+ neuro:[
+  ["stroke","Cara caída, debilidad o adormecimiento repentino de un lado, o dificultad súbita para hablar"],
+  ["seizure","Convulsión nueva, prolongada o varias convulsiones sin recuperación entre ellas"],
+  ["headacute","Dolor de cabeza súbito y extremadamente intenso o diferente a otros anteriores"],
+  ["faint","Pérdida de conciencia, confusión intensa o dificultad para despertar"],
+  ["meningitis","Fiebre con rigidez de cuello, dolor de cabeza intenso o sensibilidad marcada a la luz"],
+  ["visionacute","Pérdida repentina de visión o visión doble de inicio súbito"],
+  ["backneuro","Dolor de espalda con pérdida nueva del control de orina/heces o adormecimiento en la zona genital"]
+ ],
+ cardio:[
+  ["chest","Dolor u opresión fuerte en el pecho, especialmente si dura varios minutos o se acompaña de sudor frío"],
+  ["breath","Falta de aire intensa o dificultad para respirar en reposo"],
+  ["faint","Desmayo o sensación de desmayo junto con palpitaciones o dolor torácico"],
+  ["stroke","Cara caída, debilidad repentina de un lado o dificultad para hablar"],
+  ["bluecolor","Labios o rostro azulados o grisáceos"],
+  ["palpsevere","Palpitaciones muy rápidas o irregulares con dolor de pecho, falta de aire o mareo intenso"],
+  ["swellingbreath","Hinchazón repentina acompañada de falta de aire o dificultad para respirar al acostarse"]
+ ],
+ trauma:[
+  ["injuryacute","Deformidad evidente, herida profunda o sospecha de fractura tras un golpe"],
+  ["heavybleed","Sangrado abundante que no se detiene con presión directa"],
+  ["limbcold","Extremidad lesionada fría, pálida/azulada o sin pulso perceptible"],
+  ["numbtrauma","Pérdida nueva o progresiva de sensibilidad o fuerza después de una lesión"],
+  ["headinjury","Golpe en la cabeza con pérdida de conciencia, vómitos repetidos, confusión o somnolencia creciente"],
+  ["spinalinjury","Lesión de cuello o espalda con debilidad, hormigueo o pérdida del control de esfínteres"],
+  ["compartment","Dolor muy intenso y creciente, hinchazón tensa o dolor al mover los dedos después de una lesión"]
+ ]
+};
+
+const $ = id => document.getElementById(id);
+let selectedSymptoms = new Set();
+let selectedAlarms = new Set();
+
+function renderSymptoms(){
+ const key=$("specialty").value, spec=specialties[key];
+ $("symptomList").innerHTML="";
+ selectedSymptoms.clear();
+ spec.symptoms.forEach(([id,label])=>{
+  const lab=document.createElement("label"); lab.className="option";
+  lab.innerHTML=`<input type="checkbox" value="${id}"><span>${label}</span>`;
+  const input=lab.querySelector("input");
+  input.addEventListener("change",()=>{input.checked?selectedSymptoms.add(id):selectedSymptoms.delete(id);$("result").style.display="none";});
+  $("symptomList").appendChild(lab);
+ });
+ $("result").style.display="none";
+}
+function renderAlarms(){
+ const key=$("specialty").value;
+ const list=alarmSets[key] || alarmSets.general;
+ const label=specialties[key].label;
+ $("alarmHeading").textContent="3. Señales de alarma · "+label;
+ $("alarmDescription").textContent="Estas señales están adaptadas a "+label.toLowerCase()+". Marca solo las que la persona presenta actualmente. Si aparece una, busca atención urgente.";
+ $("alarmList").innerHTML="";
+ selectedAlarms.clear();
+ list.forEach(([id,label])=>{
+  // La fiebre en menores de 3 meses se muestra en pediatría; en otros grupos no aplica.
+  if(id==="feverunder3" && $("age").value!=="under3") return;
+  const lab=document.createElement("label"); lab.className="option";
+  lab.innerHTML=`<input type="checkbox" value="${id}"><span>${label}</span>`;
+  const input=lab.querySelector("input");
+  input.addEventListener("change",()=>{input.checked?selectedAlarms.add(id):selectedAlarms.delete(id);$("result").style.display="none";});
+  $("alarmList").appendChild(lab);
+ });
+ $("result").style.display="none";
+}
+$("specialty").addEventListener("change",()=>{renderSymptoms();renderAlarms();});
+$("age").addEventListener("change",renderAlarms);
+renderSymptoms();renderAlarms();
+
+function causesFor(spec, s, age){
+ const c=[];
+ const add=(name,desc)=>c.push({name,desc});
+ if(spec==="general"){
+  if(s.has("fever")&&(s.has("body")||s.has("chills"))) add("Infección viral (por ejemplo, gripe u otra virosis)","La fiebre junto con dolores corporales o escalofríos puede aparecer en infecciones virales. Se necesita valoración para identificar la causa.");
+  if(s.has("headache")) add("Cefalea tensional o migraña","Son causas frecuentes de dolor de cabeza, pero existen otras. La intensidad, el inicio y los síntomas acompañantes son importantes.");
+  if(s.has("dizzy")) add("Deshidratación, cambios de presión u otras causas de mareo","El mareo tiene muchas causas y puede requerir control de presión, hidratación y evaluación clínica.");
+  if(s.has("fatigue")) add("Cansancio asociado a falta de sueño, infección, anemia u otras causas","Si persiste, es intenso o afecta las actividades diarias, conviene una evaluación profesional.");
+ }
+ if(spec==="pediatria"){
+  if(s.has("fever")&&(s.has("cough")||s.has("runny"))) add("Infección respiratoria viral","Es una causa frecuente de fiebre con tos o congestión, pero la edad, respiración, hidratación y estado general determinan la urgencia.");
+  if(s.has("vomit")||s.has("diarrhea")) add("Gastroenteritis u otra infección","Vómitos o diarrea pueden causar deshidratación. Vigila la cantidad de orina, la ingesta de líquidos y el estado general.");
+  if(s.has("rash")) add("Erupción viral, irritación o reacción alérgica","Las manchas o sarpullidos tienen varias causas; su aspecto y la presencia de fiebre u otros síntomas deben evaluarse.");
+  if(s.has("poorfeed")) add("Dificultad de alimentación que requiere valoración","En bebés y niños pequeños, comer o beber mucho menos de lo habitual merece atención, especialmente si hay menos orina o decaimiento.");
+ }
+ if(spec==="respiratorio"){
+  if((s.has("cough")||s.has("sore")||s.has("runny"))&&(s.has("fever")||s.has("body"))) add("Infección respiratoria viral (resfrío, influenza o COVID-19, entre otras)","Puede producir tos, dolor de garganta, congestión y fiebre. No es posible distinguirlas solo con estos datos.");
+  else if(s.has("cough")||s.has("sore")||s.has("runny")) add("Resfrío u otra irritación/infección de vías respiratorias","Los síntomas respiratorios leves suelen tener causas diversas; la duración y evolución importan.");
+  if(s.has("wheeze")) add("Broncoespasmo, asma u otra afección de las vías respiratorias","Los silbidos al respirar requieren evaluación, especialmente si son nuevos o se acompañan de falta de aire.");
+  if(s.has("longcough")) add("Tos persistente: es importante descartar tuberculosis y otras causas","En Perú, una tos con flema que dura dos semanas o más debe ser evaluada en un establecimiento de salud.");
+ }
+ if(spec==="gastro"){
+  if(s.has("diarrhea")&&(s.has("vomit")||s.has("nausea"))) add("Gastroenteritis o enfermedad transmitida por alimentos","Puede causar diarrea, náuseas y vómitos. La hidratación y la presencia de sangre, fiebre o dolor intenso son importantes.");
+  if(s.has("heartburn")) add("Reflujo gastroesofágico o dispepsia","Pueden producir ardor o acidez, pero el dolor en el pecho o síntomas intensos necesitan valoración para descartar otras causas.");
+  if(s.has("constipation")) add("Estreñimiento","Puede relacionarse con alimentación, hidratación, actividad o medicamentos. Dolor intenso, vómitos o distensión marcada requieren atención.");
+  if(s.has("abdpain")&&!s.has("diarrhea")&&!s.has("vomit")) add("Dolor abdominal de causa aún no determinada","Puede tener causas digestivas, urinarias, ginecológicas u otras. La ubicación y la exploración médica son necesarias.");
+  if(s.has("bloodstool")) add("Sangrado digestivo u otra causa de sangre en heces","La sangre en las heces debe ser evaluada por un profesional; si es abundante o hay mareo, busca emergencia.");
+ }
+ if(spec==="derma"){
+  if(s.has("itch")&&(s.has("rash")||s.has("redskin"))) add("Dermatitis de contacto o reacción alérgica","Puede aparecer tras contacto con jabones, cremas, plantas u otras sustancias. No se confirma sin examinar la piel.");
+  if(s.has("dry")) add("Piel seca o dermatitis","La resequedad y descamación pueden relacionarse con irritación o afecciones cutáneas frecuentes.");
+  if(s.has("blister")) add("Erupción con ampollas: requiere evaluación de la causa","Puede deberse a irritación, infección u otras afecciones. Ampollas extensas, dolorosas o con fiebre requieren atención pronta.");
+  if(s.has("wound")) add("Herida o infección cutánea","Si aumenta el enrojecimiento, calor, dolor, sale pus o aparece fiebre, busca evaluación médica.");
+  if(s.has("rash")&&!s.has("itch")) add("Erupción cutánea de diversas causas","Puede ser infecciosa, alérgica o inflamatoria; una fotografía o descripción no basta para confirmar el origen.");
+ }
+ if(spec==="gine"){
+  if(s.has("discharge")||s.has("itch")) add("Vaginitis o irritación genital","El flujo o la picazón pueden tener causas distintas, como infecciones o irritación. Puede requerirse examen y pruebas; evita automedicarte.");
+  if(s.has("urinary")) add("Infección urinaria u otra irritación urinaria","El ardor al orinar puede asociarse a infección urinaria, pero también a otras causas. Una evaluación y, a veces, análisis de orina ayudan a aclararlo.");
+  if(s.has("period")) add("Alteración del ciclo menstrual","Puede relacionarse con cambios hormonales, estrés, embarazo u otras causas. Si existe posibilidad de embarazo, consulta y considera una prueba.");
+  if(s.has("pelvic")) add("Dolor pélvico de distintas posibles causas","Puede ser ginecológico, urinario o digestivo. Si es intenso, repentino o se acompaña de fiebre o sangrado, busca atención urgente.");
+  if(s.has("bleeding")) add("Sangrado vaginal que requiere evaluación","Las causas varían según edad, ciclo y posibilidad de embarazo. Si es abundante, hay mareo o embarazo, acude a emergencia.");
+ }
+ if(spec==="uro"){
+  if(s.has("urinary")||s.has("frequency")) add("Infección urinaria baja (cistitis) u otra causa urinaria","Ardor y frecuencia al orinar pueden sugerir infección, pero se necesita evaluación y posiblemente análisis de orina.");
+  if(s.has("flank")&&s.has("fever")) add("Posible infección urinaria alta u otra afección renal","Dolor en el costado junto con fiebre necesita evaluación médica el mismo día, y con mal estado general puede ser urgente.");
+  if(s.has("bloodurine")) add("Sangre en la orina (hematuria)","Puede tener causas urinarias diversas y debe evaluarse, aunque no haya dolor.");
+  if(s.has("testicle")) add("Dolor testicular de causa por determinar","El dolor testicular, especialmente si es repentino, requiere evaluación inmediata para descartar causas urgentes.");
+ }
+ if(spec==="neuro"){
+  if(s.has("headache")) add("Migraña o cefalea tensional, entre otras causas","El patrón del dolor, la intensidad y los síntomas acompañantes ayudan a distinguirlas. Un dolor súbito y extremo es una emergencia.");
+  if(s.has("dizzy")) add("Vértigo, alteraciones del equilibrio u otras causas de mareo","Puede relacionarse con oído interno, presión, medicamentos u otras condiciones; requiere valoración si es nuevo o persistente.");
+  if(s.has("tingle")) add("Irritación o compresión de nervios, entre otras causas","El hormigueo puede tener múltiples explicaciones. Si aparece de forma repentina con debilidad o dificultad para hablar, es emergencia.");
+  if(s.has("vision")) add("Alteración visual que necesita evaluación","Los cambios repentinos de visión deben tratarse como urgencia, especialmente si se acompañan de dolor o síntomas neurológicos.");
+ }
+ if(spec==="cardio"){
+  if(s.has("palp")) add("Palpitaciones por estrés, estimulantes o alteraciones del ritmo","Las palpitaciones pueden tener distintas causas. Si se repiten, duran o se acompañan de mareo, falta de aire o dolor, busca atención urgente.");
+  if(s.has("swelling")) add("Hinchazón por causas venosas, cardíacas, renales u otras","La hinchazón de piernas necesita evaluación, sobre todo si es nueva, de un solo lado o se acompaña de falta de aire.");
+  if(s.has("fatigue")||s.has("breath")) add("Cansancio o falta de aire de diversas causas","Puede relacionarse con corazón, pulmones, anemia u otras condiciones. La falta de aire intensa es una emergencia.");
+  if(s.has("chest")) add("Dolor torácico: no es posible determinar la causa en línea","Puede tener causas cardíacas y no cardíacas. Todo dolor fuerte, opresivo o nuevo requiere valoración urgente.");
+ }
+ if(spec==="trauma"){
+  if(s.has("injury")&&(s.has("swelling")||s.has("movement"))) add("Esguince, contusión o posible fractura","Después de un golpe, la hinchazón y la dificultad para mover pueden necesitar exploración y radiografía.");
+  if(s.has("muscle")||s.has("back")) add("Sobrecarga o distensión muscular","Puede aparecer tras esfuerzo o postura, pero dolor persistente, intenso o acompañado de debilidad requiere evaluación.");
+  if(s.has("joint")) add("Dolor articular por sobrecarga, inflamación o lesión","La causa depende del inicio, la articulación afectada y la exploración física.");
+  if(s.has("numb")) add("Posible compromiso de nervios o circulación tras una lesión","El adormecimiento nuevo después de un traumatismo necesita valoración pronta.");
+ }
+ if(age==="under3" && s.has("fever")) add("Fiebre en bebé menor de 3 meses: necesita evaluación médica inmediata","En esta edad la fiebre puede ser señal de una infección importante y no debe manejarse solo con una orientación digital.");
+ return c;
+}
+
+function consultationTips(spec){
+ const tips = {
+  general:"Anota cuándo comenzaron los síntomas, si has tenido fiebre (y cuánto marcó el termómetro), si han cambiado y qué medicamentos o tratamientos utilizas.",
+  pediatria:"En niñas y niños observa si respiran con normalidad, si toman líquidos, cuántas veces orinan, su nivel de actividad y cómo evoluciona la fiebre. En menores de 3 meses, la fiebre requiere evaluación médica inmediata.",
+  respiratorio:"Comenta desde cuándo tienes tos, si hay fiebre, flema o silbidos y si te falta el aire. En Perú, una tos con flema de 2 semanas o más debe evaluarse para descartar tuberculosis y otras causas.",
+  gastro:"Anota dónde duele el abdomen, cuántas veces has tenido vómitos o diarrea, si puedes retener líquidos y si hay sangre en las heces.",
+  derma:"Observa cuándo apareció la lesión, si se extiende, pica o duele y si usaste recientemente un jabón, crema, alimento o producto nuevo. Si puedes, describe los cambios al profesional.",
+  gine:"Puede ser útil anotar la fecha de tu última menstruación, si existe posibilidad de embarazo, y cambios en el sangrado, flujo o dolor. El personal de salud puede indicar si necesitas examen o pruebas.",
+  uro:"Comenta si hay ardor, aumento de frecuencia, cambios de color u olor en la orina, fiebre o dolor en la espalda/costado. La sangre en la orina necesita evaluación.",
+  neuro:"Recuerda la hora exacta en que comenzó el síntoma y si apareció de golpe. Debilidad repentina de un lado, cara caída o dificultad para hablar son señales de emergencia.",
+  cardio:"Anota cuánto dura la molestia, qué estabas haciendo cuando empezó y si aparece con esfuerzo, palpitaciones, mareo o falta de aire. Dolor fuerte u opresivo en el pecho requiere atención urgente.",
+  trauma:"Explica cómo ocurrió el golpe o lesión, dónde duele, si puedes mover la zona y si puedes apoyar el peso. Deformidad, pérdida de sensibilidad o lesión grave requieren atención urgente."
+ };
+ return tips[spec] || tips.general;
+}
+
+
+function addThirdPossibilities(spec, s, causes){
+ const c = causes.slice();
+ const add = (name, desc) => {
+  if(c.length < 3 && !c.some(x=>x.name===name)) c.push({name,desc});
+ };
+ // Añade alternativas generales solo cuando los síntomas seleccionados guardan relación.
+ if(spec==="general"){
+  if(s.has("fatigue")||s.has("dizzy")) add("Anemia u otras alteraciones generales","El cansancio o mareo persistente puede relacionarse con anemia, presión arterial u otras condiciones que requieren evaluación y, a veces, análisis.");
+  if(s.has("headache")||s.has("dizzy")) add("Deshidratación o falta de descanso","Pueden contribuir al dolor de cabeza o mareo, pero no explican todos los casos y no deben asumirse como la causa.");
+  if(s.has("fever")&&!s.has("body")&&!s.has("chills")) add("Otra infección que necesita valoración","La fiebre puede tener distintos orígenes; la exploración y la evolución ayudan a orientar la causa.");
+ }
+ if(spec==="pediatria"){
+  if(s.has("cough")||s.has("runny")) add("Irritación respiratoria o alergia","La congestión o tos también puede relacionarse con irritantes o alergias; la fiebre o el decaimiento hacen importante la evaluación.");
+  if(s.has("rash")) add("Dermatitis de contacto o picaduras","Algunas lesiones aparecen por contacto con sustancias o picaduras; su aspecto y evolución deben revisarse.");
+  if(s.has("vomit")||s.has("diarrhea")) add("Intolerancia alimentaria u otra causa digestiva","Algunos alimentos o infecciones pueden producir molestias digestivas. Vigila hidratación y estado general.");
+ }
+ if(spec==="respiratorio"){
+  if(s.has("cough")||s.has("runny")||s.has("sore")) add("Alergia o irritación de las vías respiratorias","El polvo, humo, perfumes o alergias pueden provocar congestión, tos o irritación, especialmente sin fiebre.");
+  if(s.has("wheeze")) add("Asma o hiperreactividad bronquial","Puede producir silbidos y tos; se necesita evaluación para confirmar la causa y decidir el manejo.");
+  if(s.has("longcough")) add("Otras causas de tos persistente","Además de tuberculosis, existen asma, alergias y otras infecciones o enfermedades que deben evaluarse.");
+ }
+ if(spec==="gastro"){
+  if(s.has("abdpain")||s.has("bloat")) add("Gases o indigestión","Pueden causar hinchazón y molestias abdominales, pero no deben asumirse si el dolor es fuerte, localizado o progresivo.");
+  if(s.has("nausea")||s.has("heartburn")) add("Dispepsia o irritación gástrica","Puede provocar náuseas, ardor o sensación de llenura; la evaluación depende de la duración y los síntomas asociados.");
+  if(s.has("diarrhea")) add("Reacción a alimentos u otra infección intestinal","La diarrea puede tener distintos orígenes. La hidratación y la presencia de sangre, fiebre o dolor intenso son importantes.");
+ }
+ if(spec==="derma"){
+  if(s.has("itch")||s.has("rash")) add("Eccema u otra inflamación de la piel","Algunas afecciones inflamatorias causan picazón y enrojecimiento; se necesita observar la lesión para diferenciarlas.");
+  if(s.has("dry")) add("Eccema o dermatitis","La piel seca y descamada puede aparecer en dermatitis; evita irritantes y consulta si persiste o se extiende.");
+  if(s.has("wound")||s.has("redskin")) add("Infección superficial de la piel","Si la zona está caliente, duele cada vez más, se extiende o aparece pus o fiebre, requiere evaluación médica.");
+ }
+ if(spec==="gine"){
+  if(s.has("discharge")||s.has("itch")) add("Irritación por productos o cambios de la flora vaginal","Jabones perfumados, duchas vaginales u otras causas pueden irritar. No permite distinguir una infección sin evaluación.");
+  if(s.has("pelvic")) add("Causa urinaria o digestiva del dolor pélvico","El dolor bajo también puede originarse en vías urinarias o intestino; la localización y exploración son importantes.");
+  if(s.has("period")) add("Cambios hormonales o posibilidad de embarazo","Las variaciones del ciclo tienen distintas causas. Si existe posibilidad de embarazo, solicita orientación y una prueba adecuada.");
+ }
+ if(spec==="uro"){
+  if(s.has("flank")||s.has("bloodurine")) add("Cálculo urinario (piedra)","Puede producir dolor en el costado o sangre en la orina, pero requiere valoración para confirmar y descartar otras causas.");
+  if(s.has("urinary")||s.has("frequency")) add("Irritación uretral u otra inflamación urinaria","El ardor y la frecuencia no siempre significan cistitis; el profesional puede indicar análisis de orina.");
+  if(s.has("weakstream")) add("Dificultad de vaciamiento de la vejiga","Puede relacionarse con estrechamiento u obstrucción y requiere evaluación, especialmente si no puedes orinar.");
+ }
+ if(spec==="neuro"){
+  if(s.has("headache")) add("Deshidratación, falta de sueño o alteración visual","Pueden contribuir a ciertos dolores de cabeza, pero un dolor nuevo, intenso o diferente debe evaluarse.");
+  if(s.has("tingle")) add("Compresión de un nervio o alteraciones metabólicas","El hormigueo puede deberse a presión sobre un nervio u otras condiciones; si es repentino con debilidad es una emergencia.");
+  if(s.has("dizzy")) add("Cambios de presión u otras causas del equilibrio","El mareo puede tener causas del oído interno, presión arterial o medicamentos y requiere valoración si es nuevo o persistente.");
+ }
+ if(spec==="cardio"){
+  if(s.has("palp")) add("Efecto de cafeína, bebidas energéticas, estrés o medicamentos","Estos factores pueden favorecer palpitaciones, pero no descartan una alteración del ritmo cardíaco.");
+  if(s.has("swelling")) add("Insuficiencia venosa o efecto de algunos medicamentos","También pueden causar hinchazón de piernas; una hinchazón nueva, dolorosa o de un solo lado requiere evaluación pronta.");
+  if(s.has("fatigue")||s.has("breath")) add("Anemia o afecciones respiratorias","Pueden producir cansancio o falta de aire; se necesita evaluación para distinguirlas de causas cardíacas.");
+ }
+ if(spec==="trauma"){
+  if(s.has("joint")||s.has("swelling")) add("Tendinitis o inflamación de tejidos blandos","Puede producir dolor e hinchazón alrededor de una articulación; la exploración permite distinguirlo de una lesión más importante.");
+  if(s.has("muscle")||s.has("back")) add("Contractura o distensión muscular","Puede relacionarse con esfuerzo o postura. Si el dolor es intenso, persiste o se acompaña de debilidad, requiere evaluación.");
+  if(s.has("injury")) add("Contusión de tejidos blandos","Un golpe puede producir dolor e hinchazón sin fractura, pero no es posible descartarla sin evaluación cuando hay limitación importante.");
+ }
+ return c.slice(0,3);
+}
+
+function selfCareRecommendations(spec, s, age){
+ const r = [];
+ const add = t => { if(r.length<4 && !r.includes(t)) r.push(t); };
+ if(spec==="general"){
+  add("Descansa y evita esfuerzos intensos mientras te sientas mal.");
+  add("Bebe líquidos con regularidad si puedes hacerlo y no tienes una restricción médica de líquidos.");
+  if(s.has("fever")) add("Si tienes termómetro, registra la temperatura y anota cuándo aparece la fiebre.");
+  add("No tomes antibióticos ni combines medicamentos por tu cuenta; consulta a un profesional.");
+ }
+ if(spec==="pediatria"){
+  add("Ofrece líquidos apropiados para la edad con frecuencia; si es lactante, continúa la lactancia habitual.");
+  add("Observa respiración, actividad, alimentación y cantidad de orina o pañales mojados.");
+  add("No administres medicamentos ni dosis de adulto; consulta a un profesional sobre cualquier tratamiento.");
+  if(age==="under3") add("En bebés menores de 3 meses, cualquier fiebre requiere evaluación médica inmediata.");
+ }
+ if(spec==="respiratorio"){
+  add("Descansa y bebe líquidos con regularidad si no tienes restricción médica.");
+  add("Evita humo de tabaco, polvo, aerosoles y otros irritantes; mantén los ambientes ventilados.");
+  add("Cubre tos y estornudos y usa mascarilla si tienes síntomas respiratorios al estar con otras personas.");
+  add("No uses antibióticos ni inhaladores de otra persona sin indicación profesional.");
+ }
+ if(spec==="gastro"){
+  if(s.has("diarrhea")||s.has("vomit")) add("Si hay diarrea o vómitos y puedes beber, toma sorbos pequeños y frecuentes de suero de rehidratación oral preparado exactamente según el envase.");
+  else add("Come porciones pequeñas según tolerancia y mantén una hidratación habitual.");
+  add("Evita por el momento alimentos que notes que empeoran las molestias; no hagas ayunos prolongados.");
+  add("No uses antibióticos ni medicamentos para cortar la diarrea o los vómitos sin orientación profesional.");
+  if(s.has("bloodstool")) add("La sangre en las heces requiere valoración médica; no intentes tratarla en casa.");
+ }
+ if(spec==="derma"){
+  add("Lava suavemente la zona con agua y un producto sin perfume, y sécala sin frotar.");
+  add("Suspende temporalmente productos nuevos que puedan irritar la piel.");
+  add("Evita rascar, reventar ampollas o aplicar remedios caseros, corticoides o antibióticos tópicos sin indicación.");
+  add("Si la lesión se extiende, duele más, supura o aparece fiebre, busca evaluación médica.");
+ }
+ if(spec==="gine"){
+  add("Evita duchas vaginales y productos perfumados o irritantes en la zona íntima.");
+  add("No uses óvulos, antibióticos ni tratamientos para infecciones sin evaluación profesional.");
+  add("Si existe posibilidad de embarazo, coméntalo al profesional y solicita orientación sobre una prueba.");
+  add("Si hay dolor intenso, sangrado abundante, fiebre o embarazo con dolor/sangrado, busca atención urgente.");
+ }
+ if(spec==="uro"){
+  add("Bebe agua de forma habitual si no tienes una restricción médica de líquidos.");
+  add("No retengas la orina durante mucho tiempo.");
+  add("No tomes antibióticos sobrantes ni medicamentos por recomendación informal.");
+  add("Fiebre con dolor en el costado, sangre en la orina o dificultad para orinar requiere valoración médica pronta.");
+ }
+ if(spec==="neuro"){
+  add("Si el malestar es leve, descansa en un ambiente tranquilo y mantén una hidratación habitual.");
+  add("Anota la hora de inicio, duración y factores que empeoran o alivian el síntoma.");
+  add("Evita conducir o manejar maquinaria si tienes mareo o alteraciones de la visión.");
+  add("Si aparece debilidad repentina, dificultad para hablar, desmayo o dolor de cabeza súbito muy intenso, busca emergencia.");
+ }
+ if(spec==="cardio"){
+  add("Evita por ahora bebidas energéticas, exceso de cafeína, nicotina y estimulantes.");
+  add("Anota cuándo aparecen las palpitaciones o molestias y cuánto duran.");
+  add("No inicies ni suspendas medicamentos cardíacos por tu cuenta.");
+  add("Dolor de pecho, falta de aire intensa, desmayo o sudor frío requieren atención de emergencia.");
+ }
+ if(spec==="trauma"){
+  add("Protege y evita forzar la zona lesionada; no continúes la actividad que produjo el dolor.");
+  add("Si hay hinchazón reciente, puedes colocar frío envuelto en una tela durante 15 a 20 minutos; nunca directamente sobre la piel.");
+  add("Eleva la zona si está hinchada, siempre que hacerlo no aumente el dolor.");
+  add("No masajees una lesión importante ni intentes acomodar un hueso o articulación. Busca evaluación si no puedes apoyar o mover la zona.");
+ }
+ return r;
+}
+
+
+function emergencyPossibilities(ids, spec, symptoms, age){
+ const options = [];
+ const add = (name, desc) => {
+  if(options.length < 3 && !options.some(x=>x.name===name)) options.push({name,desc});
+ };
+ const map = {
+  breath:[
+   ["Crisis asmática o estrechamiento importante de las vías respiratorias","Puede dificultar el paso del aire y requiere evaluación inmediata."],
+   ["Infección respiratoria importante","Algunas infecciones pueden afectar la respiración y necesitan valoración urgente."],
+   ["Afección pulmonar o cardíaca","Existen problemas del pulmón o del corazón que también pueden causar falta de aire; el equipo debe determinar la causa."]
+  ],
+  chest:[
+   ["Problema del corazón que debe descartarse","El dolor opresivo en el pecho puede tener origen cardíaco y necesita evaluación inmediata."],
+   ["Afección pulmonar","Algunos problemas pulmonares pueden causar dolor torácico y requieren atención urgente."],
+   ["Dolor de origen muscular o digestivo","También existen causas no cardíacas, pero no es seguro diferenciarlas en casa cuando el dolor es fuerte."]
+  ],
+  faint:[
+   ["Alteración del ritmo o funcionamiento del corazón","Algunos problemas cardíacos pueden causar desmayo y deben descartarse."],
+   ["Bajada de presión o deshidratación importante","Pueden reducir temporalmente el flujo de sangre al cerebro."],
+   ["Alteración de glucosa u otra causa metabólica","Los cambios metabólicos pueden afectar el estado de conciencia y requieren evaluación."]
+  ],
+  seizure:[
+   ["Crisis convulsiva","Puede estar relacionada con epilepsia u otras condiciones neurológicas."],
+   ["Fiebre o infección que afecta al sistema nervioso","Algunas infecciones o cuadros febriles pueden acompañarse de convulsiones."],
+   ["Alteración metabólica o efecto de sustancias/medicamentos","Cambios de glucosa, sales del organismo o algunas sustancias pueden desencadenar convulsiones."]
+  ],
+  heavybleed:[
+   ["Lesión o herida con pérdida importante de sangre","El sangrado abundante puede requerir control inmediato."],
+   ["Sangrado digestivo o ginecológico","El origen depende de dónde provenga la sangre y de otros síntomas."],
+   ["Alteración de la coagulación u otra causa médica","Algunas enfermedades o medicamentos pueden favorecer sangrados."]
+  ],
+  stroke:[
+   ["Accidente cerebrovascular (ACV)","La debilidad repentina, cara caída o dificultad para hablar pueden ser señales de ACV."],
+   ["Otra alteración neurológica aguda","Existen otras condiciones neurológicas que pueden parecerse a un ACV y requieren evaluación urgente."],
+   ["Alteración de glucosa u otra condición que imita síntomas neurológicos","Algunos problemas metabólicos pueden producir síntomas parecidos; se necesita valoración inmediata."]
+  ],
+  allergy:[
+   ["Reacción alérgica grave (anafilaxia)","La hinchazón de lengua o garganta con dificultad respiratoria puede comprometer la vía aérea."],
+   ["Angioedema","La hinchazón profunda de labios, lengua o garganta puede afectar la respiración."],
+   ["Otra causa de obstrucción o inflamación de la vía respiratoria","El personal de emergencia debe identificar rápidamente la causa."]
+  ],
+  pregbleed:[
+   ["Complicación relacionada con el embarazo","El sangrado o dolor intenso durante el embarazo necesita evaluación urgente."],
+   ["Embarazo ectópico u otra complicación temprana","En ciertas etapas del embarazo, el dolor y sangrado pueden indicar una condición que requiere atención inmediata."],
+   ["Otra causa ginecológica u obstétrica","La valoración presencial permite determinar el origen y el manejo adecuado."]
+  ],
+  dehydration:[
+   ["Deshidratación importante por vómitos o diarrea","La pérdida de líquidos puede afectar la circulación y el estado general."],
+   ["Infección gastrointestinal u otra infección","Puede provocar pérdida de líquidos y decaimiento."],
+   ["Otra causa de pérdida de líquidos o alteración metabólica","Se necesitan evaluación y, en ocasiones, análisis para identificar la causa."]
+  ],
+  severeabd:[
+   ["Apendicitis u otra inflamación abdominal","El dolor intenso o progresivo puede deberse a una condición que necesita evaluación rápida."],
+   ["Problema de vesícula, intestino u otro órgano abdominal","Varias afecciones abdominales pueden producir dolor intenso."],
+   ["Causa urinaria o ginecológica","Algunos problemas de vías urinarias o del aparato reproductor también pueden causar dolor abdominal intenso."]
+  ],
+  testicleacute:[
+   ["Torsión testicular","Es una urgencia que necesita valoración inmediata para proteger el testículo."],
+   ["Inflamación o infección del epidídimo o testículo","Puede causar dolor e hinchazón y requiere examen médico."],
+   ["Lesión o hernia en la región inguinal","Un traumatismo o una hernia también pueden causar dolor testicular."]
+  ],
+  headacute:[
+   ["Sangrado u otro problema vascular dentro del cráneo","Un dolor de cabeza súbito y extremadamente intenso necesita descartar causas vasculares urgentes."],
+   ["Infección del sistema nervioso","Algunas infecciones pueden producir dolor de cabeza intenso, especialmente con fiebre o rigidez de cuello."],
+   ["Otra causa neurológica aguda","La evaluación presencial es necesaria para diferenciar causas urgentes de otras menos graves."]
+  ],
+  injuryacute:[
+   ["Fractura","Una lesión grave, deformidad o incapacidad para usar una extremidad puede indicar fractura."],
+   ["Luxación o lesión importante de tejidos blandos","Una articulación puede haberse desplazado o los ligamentos y músculos haberse lesionado."],
+   ["Lesión de nervios o vasos sanguíneos","La pérdida de sensibilidad, debilidad o cambios de color/temperatura requieren evaluación urgente."]
+  ],
+  feverunder3:[
+   ["Infección viral","Puede causar fiebre, pero en menores de 3 meses no es posible asumir que sea leve."],
+   ["Infección bacteriana","En bebés pequeños algunas infecciones bacterianas pueden evolucionar rápidamente y deben descartarse."],
+   ["Otra causa de fiebre en el recién nacido o lactante pequeño","Se necesita valoración médica inmediata para identificar el origen."]
+  ],
+  childsleep:[
+   ["Infección importante","El decaimiento extremo o la dificultad para despertar pueden acompañar infecciones graves."],
+   ["Deshidratación o alteración metabólica","Puede afectar el estado de alerta y requiere valoración inmediata."],
+   ["Otra causa que altera el estado de conciencia","La evaluación presencial es prioritaria."]
+  ],
+  childrash:[
+   ["Infección que puede afectar la sangre o la circulación","Manchas que no palidecen con presión, sobre todo con fiebre, requieren evaluación urgente."],
+   ["Alteración de plaquetas o coagulación","Algunas condiciones pueden producir manchas moradas o puntitos rojos."],
+   ["Otra causa de erupción purpúrica","No es posible distinguirla con seguridad sin valoración presencial."]
+  ],
+  bluecolor:[
+   ["Baja oxigenación de la sangre","La coloración azulada puede indicar que el cuerpo no está recibiendo suficiente oxígeno."],
+   ["Problema pulmonar o cardíaco","Algunas afecciones respiratorias o del corazón pueden causar cambios de coloración."],
+   ["Otra alteración circulatoria","Se necesita evaluación inmediata."]
+  ],
+  bloodcough:[
+   ["Sangrado de las vías respiratorias","Toser sangre puede tener origen en bronquios o pulmones y requiere evaluación."],
+   ["Infección pulmonar, incluida tuberculosis","Algunas infecciones respiratorias pueden causar sangre al toser."],
+   ["Otra afección pulmonar o vascular","El personal debe identificar el origen y la gravedad."]
+  ],
+  severeweak:[
+   ["Infección respiratoria grave","El deterioro rápido y la debilidad intensa pueden indicar una infección importante."],
+   ["Disminución de oxígeno","Puede acompañar problemas respiratorios y requiere evaluación inmediata."],
+   ["Otra complicación pulmonar o sistémica","La evaluación presencial determina la causa."]
+  ],
+  digestivebleed:[
+   ["Sangrado del tubo digestivo","El vómito con sangre o las heces negras pueden indicar sangrado interno."],
+   ["Úlcera u otra lesión digestiva","Puede producir sangrado y requiere evaluación urgente."],
+   ["Otra causa gastrointestinal o de coagulación","La valoración médica identifica el origen."]
+  ],
+  persistentvomit:[
+   ["Deshidratación importante","No poder retener líquidos aumenta el riesgo de pérdida de agua y sales."],
+   ["Obstrucción u otra afección abdominal","Algunas causas de vómitos persistentes necesitan atención urgente."],
+   ["Infección gastrointestinal intensa","Puede provocar vómitos persistentes y deterioro general."]
+  ],
+  feverabd:[
+   ["Infección abdominal","Fiebre con dolor intenso puede indicar una infección que necesita evaluación rápida."],
+   ["Inflamación de un órgano abdominal","Apendicitis u otras inflamaciones pueden producir este patrón."],
+   ["Otra infección o complicación abdominal","Se requiere exploración presencial."]
+  ],
+  skinmucosa:[
+   ["Reacción cutánea grave","Ampollas extensas o desprendimiento de piel pueden indicar una reacción seria."],
+   ["Infección cutánea extensa","Algunas infecciones pueden afectar piel y mucosas."],
+   ["Otra enfermedad inflamatoria o medicamentosa","La evaluación urgente es necesaria para identificarla."]
+  ],
+  skinrapid:[
+   ["Infección profunda de piel y tejidos","Enrojecimiento que avanza con dolor intenso o fiebre puede indicar infección importante."],
+   ["Celulitis extensa u otra infección bacteriana","Puede extenderse y requiere evaluación médica."],
+   ["Otra inflamación aguda de tejidos","La valoración presencial permite determinar la causa."]
+  ],
+  skinpurple:[
+   ["Erupción purpúrica asociada a infección","Manchas que no palidecen con presión pueden requerir descartar infección grave."],
+   ["Alteración de plaquetas o coagulación","Puede producir puntos rojos o manchas moradas."],
+   ["Otra causa vascular o inflamatoria","Se necesita evaluación urgente."]
+  ],
+  skinface:[
+   ["Angioedema o reacción alérgica","La hinchazón rápida de la cara puede progresar y comprometer vías respiratorias."],
+   ["Infección alrededor del ojo o tejidos faciales","La hinchazón con fiebre, dolor o alteración visual necesita atención urgente."],
+   ["Otra inflamación aguda facial","Debe evaluarse presencialmente."]
+  ],
+  feverwound:[
+   ["Infección de piel y tejidos blandos","Una herida con fiebre y empeoramiento puede indicar infección."],
+   ["Absceso u otra infección localizada","Puede requerir evaluación y tratamiento profesional."],
+   ["Infección más extendida","La fiebre con deterioro general requiere atención pronta."]
+  ],
+  pregseizure:[
+   ["Eclampsia u otra complicación hipertensiva del embarazo/posparto","Una convulsión durante el embarazo o después del parto es una emergencia obstétrica."],
+   ["Otra causa neurológica aguda","También deben evaluarse causas neurológicas o metabólicas."],
+   ["Alteración metabólica","Cambios de glucosa o sales del organismo pueden causar convulsiones."]
+  ],
+  preghead:[
+   ["Preeclampsia u otra complicación hipertensiva","Dolor de cabeza intenso y cambios visuales durante el embarazo o posparto requieren evaluación urgente."],
+   ["Migraña u otra causa neurológica","Puede haber causas distintas, pero primero deben descartarse complicaciones obstétricas."],
+   ["Otra alteración vascular o metabólica","Se requiere evaluación presencial."]
+  ],
+  feverpelvic:[
+   ["Infección pélvica","Fiebre con dolor pélvico puede indicar una infección que necesita evaluación."],
+   ["Complicación ginecológica u obstétrica","El profesional debe descartar causas que requieran tratamiento urgente."],
+   ["Otra infección abdominal o urinaria","La evaluación presencial ayuda a identificar el origen."]
+  ],
+  urineretention:[
+   ["Retención aguda de orina","La imposibilidad de orinar puede requerir atención inmediata."],
+   ["Obstrucción de las vías urinarias","Un cálculo u otra obstrucción puede impedir el flujo de orina."],
+   ["Alteración prostática, uretral o neurológica","El examen permite identificar la causa."]
+  ],
+  feverflank:[
+   ["Infección renal (pielonefritis)","Fiebre con dolor en el costado puede indicar infección renal."],
+   ["Cálculo urinario con infección","La combinación puede ser grave y requiere valoración urgente."],
+   ["Otra infección urinaria alta","Se necesitan evaluación y posiblemente análisis."]
+  ],
+  bloodclots:[
+   ["Sangrado de vías urinarias","La sangre abundante o coágulos pueden indicar sangrado urinario."],
+   ["Cálculo o lesión de vías urinarias","Puede provocar sangre y obstrucción."],
+   ["Otra afección renal o vesical","Debe investigarse presencialmente."]
+  ],
+  urosepsis:[
+   ["Infección urinaria complicada","Fiebre con confusión o deterioro general puede indicar infección grave."],
+   ["Sepsis de origen urinario","La infección puede afectar todo el organismo y requiere atención inmediata."],
+   ["Otra infección sistémica","El equipo de emergencia debe identificar el foco."]
+  ],
+  meningitis:[
+   ["Meningitis","Fiebre, rigidez de cuello y dolor de cabeza pueden ser señales de meningitis."],
+   ["Otra infección del sistema nervioso","Existen infecciones que requieren evaluación y tratamiento urgente."],
+   ["Otra causa neurológica aguda","La valoración presencial es prioritaria."]
+  ],
+  visionacute:[
+   ["Evento vascular cerebral u ocular","La pérdida repentina de visión puede tener causas vasculares urgentes."],
+   ["Desprendimiento u otra afección aguda de retina","Algunas enfermedades oculares requieren atención inmediata."],
+   ["Otra alteración neurológica u ocular","Se necesita evaluación urgente."]
+  ],
+  backneuro:[
+   ["Compresión de nervios en la parte baja de la columna","La pérdida de control de esfínteres o adormecimiento genital puede indicar compresión nerviosa grave."],
+   ["Síndrome de cola de caballo","Es una urgencia que requiere evaluación inmediata."],
+   ["Otra lesión neurológica o medular","Debe evaluarse presencialmente."]
+  ],
+  palpsevere:[
+   ["Alteración importante del ritmo cardíaco","Palpitaciones con desmayo, dolor o falta de aire pueden indicar una arritmia significativa."],
+   ["Problema cardíaco agudo","Se debe descartar una causa cardíaca urgente."],
+   ["Otra alteración circulatoria o metabólica","El personal de emergencia determinará la causa."]
+  ],
+  swellingbreath:[
+   ["Insuficiencia cardíaca aguda u otra congestión pulmonar","La hinchazón acompañada de falta de aire puede indicar acumulación de líquido."],
+   ["Problema pulmonar o vascular","También puede causar dificultad respiratoria aguda."],
+   ["Otra afección cardíaca o renal","Requiere evaluación urgente."]
+  ],
+  limbischemia:[
+   ["Compromiso de circulación de la extremidad","Una extremidad fría, pálida o sin pulso puede indicar falta de flujo sanguíneo."],
+   ["Lesión vascular por traumatismo","Un golpe puede dañar vasos sanguíneos."],
+   ["Síndrome compartimental u otra lesión grave","La evaluación inmediata puede evitar daño permanente."]
+  ],
+  limbcold:[
+   ["Disminución importante del flujo sanguíneo","Una extremidad fría, pálida o azulada después de una lesión puede indicar compromiso de circulación."],
+   ["Lesión de una arteria o vaso sanguíneo","Un traumatismo puede afectar el flujo de sangre hacia la extremidad."],
+   ["Compresión vascular o síndrome compartimental","La hinchazón o presión dentro de los tejidos puede comprometer la circulación."]
+  ],
+  numbtrauma:[
+   ["Lesión de nervios","La pérdida de sensibilidad o fuerza después de un golpe puede indicar lesión nerviosa."],
+   ["Compromiso de circulación","También puede existir daño vascular."],
+   ["Fractura o lesión profunda","Se necesita evaluación urgente."]
+  ],
+  headinjury:[
+   ["Conmoción cerebral o traumatismo craneal","Los síntomas después de un golpe en la cabeza requieren evaluación."],
+   ["Sangrado dentro del cráneo","La pérdida de conciencia, confusión o vómitos repetidos requieren descartar sangrado."],
+   ["Otra lesión cerebral traumática","El examen presencial determina la gravedad."]
+  ],
+  spinalinjury:[
+   ["Lesión de la médula espinal o nervios","Debilidad o pérdida de control de esfínteres después de una lesión puede indicar daño neurológico."],
+   ["Fractura vertebral","Un traumatismo de columna puede causar lesión ósea."],
+   ["Compresión nerviosa importante","Requiere evaluación inmediata."]
+  ],
+  compartment:[
+   ["Síndrome compartimental","Dolor intenso y creciente con hinchazón tensa puede indicar presión peligrosa dentro de un compartimento muscular."],
+   ["Fractura o lesión profunda","Puede acompañarse de inflamación importante."],
+   ["Lesión vascular o muscular grave","Necesita evaluación urgente."]
+  ]
+ };
+ ids.forEach(id=>{
+  (map[id]||[]).forEach(([name,desc])=>add(name,desc));
+ });
+ // Completa con causas compatibles con los síntomas marcados, sin superar tres.
+ if(options.length<3){
+  causesFor(spec,symptoms,age).forEach(c=>add(c.name,c.desc));
+ }
+ return options.slice(0,3);
+}
+
+function emergencyRecommendations(ids){
+ const r = [
+  "Acude ahora al servicio de Emergencia más cercano o solicita ayuda de emergencia local. No esperes a que los síntomas desaparezcan.",
+  "No conduzcas tú mismo/a si tienes dolor intenso, mareo, debilidad, falta de aire o alteración de la conciencia; pide ayuda para el traslado.",
+  "No te automediques ni retrases la atención para probar remedios caseros. Lleva tus documentos y lista de medicamentos solo si están a la mano."
+ ];
+ if(ids.includes("stroke")) r.unshift("Anota la hora en que comenzaron los síntomas o la última vez que la persona estaba bien; comunícalo al personal de emergencia.");
+ if(ids.includes("seizure")) r.unshift("Durante una convulsión, aparta objetos con los que la persona pueda golpearse; no la sujetes y no pongas nada en su boca.");
+ if(ids.includes("faint")) r.unshift("Si la persona no responde normalmente, tiene dificultad para respirar o no se recupera, solicita ayuda de emergencia inmediatamente.");
+ if(ids.includes("heavybleed")) r.unshift("Si el sangrado es externo, aplica presión firme y continua con una tela limpia mientras llega la ayuda, siempre que sea posible hacerlo sin riesgo.");
+ if(ids.includes("allergy")||ids.includes("breath")) r.unshift("Mantén a la persona acompañada y evita darle comida, bebida o pastillas si tiene dificultad para respirar o tragar.");
+ if(ids.includes("pregbleed")||ids.includes("pregseizure")||ids.includes("preghead")) r.unshift("Indica al personal si hay embarazo o parto reciente y, si lo sabes, cuántas semanas de gestación han transcurrido.");
+ if(ids.includes("childsleep")) r.unshift("No fuerces comida, bebida ni medicamentos si el niño está muy somnoliento o no puede tragar con normalidad.");
+ if(ids.includes("childrash")||ids.includes("skinpurple")) r.unshift("No esperes a que las manchas desaparezcan ni intentes tratarlas en casa; muestra la piel al equipo de emergencia.");
+ if(ids.includes("bloodcough")) r.unshift("Mantén a la persona en reposo y comunica cuánto sangrado hubo al personal de emergencia.");
+ if(ids.includes("digestivebleed")||ids.includes("bloodclots")) r.unshift("No tomes antiinflamatorios ni otros medicamentos por tu cuenta mientras se evalúa el sangrado.");
+ if(ids.includes("urineretention")) r.unshift("No intentes resolver la imposibilidad de orinar tomando grandes cantidades de líquido; busca evaluación inmediata.");
+ if(ids.includes("testicleacute")) r.unshift("No apliques calor ni intentes manipular el testículo; acude inmediatamente.");
+ if(ids.includes("headinjury")||ids.includes("spinalinjury")) r.unshift("Evita mover innecesariamente cabeza, cuello o espalda tras una lesión importante y solicita ayuda para el traslado.");
+ if(ids.includes("limbcold")||ids.includes("numbtrauma")||ids.includes("compartment")) r.unshift("No masajees, comprimas ni intentes acomodar la extremidad lesionada.");
+ if(ids.includes("meningitis")) r.unshift("Evita el contacto estrecho innecesario con otras personas y comunica al personal la fiebre, rigidez de cuello y hora de inicio.");
+ return [...new Set(r)].slice(0,6);
+}
+
+function analyze(){
+ const spec=$("specialty").value, age=$("age").value, symptoms=selectedSymptoms;
+ if(symptoms.size===0 && selectedAlarms.size===0){alert("Selecciona al menos un síntoma o una señal de alarma para recibir orientación.");return;}
+ const emergency = selectedAlarms.size>0 || (age==="under3" && symptoms.has("fever")) ||
+   (spec==="cardio" && symptoms.has("chest")) ||
+   (spec==="respiratorio" && symptoms.has("breath"));
+ const causes=causesFor(spec,symptoms,age);
+ const names=[...symptoms].map(id=>{
+  const item=specialties[spec].symptoms.find(x=>x[0]===id);
+  return item?item[1]:id;
+ });
+ let html="";
+ if(emergency){
+  const emergencyIds=[...selectedAlarms];
+  if(age==="under3" && symptoms.has("fever") && !emergencyIds.includes("feverunder3")) emergencyIds.push("feverunder3");
+  if(spec==="cardio" && symptoms.has("chest") && !emergencyIds.includes("chest")) emergencyIds.push("chest");
+  if(spec==="respiratorio" && symptoms.has("breath") && !emergencyIds.includes("breath")) emergencyIds.push("breath");
+  const options=emergencyPossibilities(emergencyIds,spec,symptoms,age);
+  const actions=emergencyRecommendations(emergencyIds);
+  html='<div class="resultbox urgent"><h3>🚨 Nivel de atención: emergencia</h3><p>Las respuestas incluyen una señal que puede indicar una urgencia. La prioridad es recibir evaluación presencial inmediata. Las posibilidades que aparecen abajo son información educativa y <strong>no deben retrasar la atención</strong>.</p><p><strong>Acude ahora al servicio de Emergencia más cercano o solicita ayuda de emergencia local.</strong> El personal de salud debe evaluar y priorizar la atención.</p></div>';
+  html+='<div class="resultbox info" style="margin-top:10px"><h3>🩺 Posibles explicaciones que el equipo de salud debe evaluar</h3><p>Según la señal de alarma y los síntomas seleccionados, algunas posibilidades que un profesional podría considerar son:</p>';
+  if(options.length){
+   options.forEach((c,i)=>{html+=`<div class="cause"><strong>${i+1}. ${escapeHTML(c.name)}</strong><span>${escapeHTML(c.desc)}</span></div>`;});
+  }else{
+   html+='<div class="cause"><strong>No hay datos suficientes para proponer causas concretas</strong><span>La señal de alarma por sí sola no permite establecer una causa. La evaluación presencial es prioritaria.</span></div>';
+  }
+  html+='</div>';
+  html+='<div class="recommendbox"><strong>🆘 Recomendaciones inmediatas</strong><ul>'+actions.map(x=>'<li>'+escapeHTML(x)+'</li>').join('')+'</ul></div>';
+  html+='<p class="small">Estas indicaciones son de apoyo mientras se consigue atención. No sustituyen las instrucciones del personal de emergencia ni un tratamiento profesional.</p>';
+ }else{
+  html='<div class="resultbox review"><h3>🩺 ¿Qué podría estar pasando?</h3><p>Por la combinación de síntomas que seleccionaste, estas son algunas <strong>posibles explicaciones</strong> que pueden presentarse con ese patrón. No son diagnósticos, no están ordenadas por probabilidad y no se puede confirmar ninguna sin una evaluación profesional.</p>';
+  const options = addThirdPossibilities(spec,symptoms,causes);
+  if(options.length){
+   options.forEach((c,i)=>{
+    html+=`<div class="cause"><strong>${i+1}. ${escapeHTML(c.name)}</strong><span>${escapeHTML(c.desc)}</span></div>`;
+   });
+   if(options.length<3) html+=`<p class="small">Se muestran ${options.length} posibilidad(es). No se agregan más para evitar sugerir causas sin suficiente relación con los síntomas seleccionados.</p>`;
+  }else{
+   html+='<div class="cause"><strong>No hay información suficiente para sugerir causas concretas</strong><span>Los síntomas pueden tener muchas explicaciones. Un profesional puede hacer preguntas, examinarte y decidir si necesitas pruebas.</span></div>';
+  }
+  const advice = selfCareRecommendations(spec,symptoms,age);
+  html+='<div class="recommendbox"><strong>🌿 Recomendaciones generales para cuidarte</strong><ul>'+advice.map(x=>'<li>'+escapeHTML(x)+'</li>').join('')+'</ul></div>';
+  html+='<div class="guidebox"><strong>💡 ¿Qué información puede ayudar en tu consulta?</strong>'+escapeHTML(consultationTips(spec))+'</div>';
+  html+='<p><strong>¿Qué hacer ahora?</strong> Estas medidas no tratan necesariamente la causa. Solicita evaluación profesional si los síntomas persisten, empeoran o afectan tus actividades. No empieces antibióticos ni cambies medicamentos por tu cuenta.</p>';
+  html+='<p><strong>Importante:</strong> no marcar señales de alarma no garantiza que el problema sea leve. Si te preocupa el estado de la persona, busca atención profesional.</p></div>';
+ }
+ html+=`<div style="margin-top:10px"><span class="pill">${escapeHTML(specialties[spec].label)}</span><span class="pill">${escapeHTML($("duration").value)}</span></div><p class="small"><strong>Síntomas marcados:</strong> ${names.map(escapeHTML).join(", ")}.</p>`;
+ if($("details").value.trim()) html+='<p class="small"><strong>Tu descripción:</strong> '+escapeHTML($("details").value.trim())+'</p><p class="small">Nota: la descripción escrita se muestra como referencia, pero este prototipo no la interpreta automáticamente; las sugerencias se basan en las casillas marcadas.</p>';
+ $("resultbox").innerHTML=html;
+ $("result").style.display="block";
+ $("result").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+$("analyze").addEventListener("click",analyze);
+$("clear").addEventListener("click",()=>{
+ $("specialty").value="general";$("age").value="adult";$("details").value="";$("duration").selectedIndex=0;
+ selectedAlarms.clear();selectedSymptoms.clear();renderSymptoms();renderAlarms();$("result").style.display="none";
+});
+</script>
+</body>
+</html>
